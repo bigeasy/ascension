@@ -1,0 +1,33 @@
+{
+    "name":                 "ascention",
+    "version":              "9.9.9",
+    "description":
+
+      "Comparator function builder.",
+
+    "keywords":
+    [
+                            "comparator", "sort"
+    ],
+    "author":               "Alan Gutierrez <alan@prettyrobots.com>",
+    "homepage":             "https://github.com/bigeasy/ascention",
+    "bugs":                 "https://github.com/bigeasy/ascention/issues",
+    "license":              "MIT",
+    "repository":
+    {
+                            "type": "git",
+                            "url": "http://github.com/bigeasy/ascention.git"
+    },
+    "dependencies":
+    {
+    },
+    "devDependencies":
+    {
+                            "proof":                        "1.2.x"
+    },
+    "main":                 "ascention",
+    "scripts":
+    {
+                            "test": "proof platform win32 && proof test */*.t.js || t/test"
+    }
+}
