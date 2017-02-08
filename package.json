@@ -1,5 +1,5 @@
 {
-    "name":                 "ascention",
+    "name":                 "ascension",
     "version":              "9.9.9",
     "description":
 
@@ -10,13 +10,13 @@
                             "comparator", "sort"
     ],
     "author":               "Alan Gutierrez <alan@prettyrobots.com>",
-    "homepage":             "https://github.com/bigeasy/ascention",
-    "bugs":                 "https://github.com/bigeasy/ascention/issues",
+    "homepage":             "https://github.com/bigeasy/ascension",
+    "bugs":                 "https://github.com/bigeasy/ascension/issues",
     "license":              "MIT",
     "repository":
     {
                             "type": "git",
-                            "url": "http://github.com/bigeasy/ascention.git"
+                            "url": "http://github.com/bigeasy/ascension.git"
     },
     "dependencies":
     {
@@ -25,7 +25,7 @@
     {
                             "proof":                        "1.2.x"
     },
-    "main":                 "ascention",
+    "main":                 "ascension",
     "scripts":
     {
                             "test": "proof platform win32 && proof test */*.t.js || t/test"
