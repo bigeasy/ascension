@@ -14,6 +14,48 @@
       <!-- todo: code font is too small for body text font-->
     </div>
     <div class="unit description markdown include" data-file="index.md"><p>Look at the <a href="./docco/">Docco</a> for now.</p>
+<p>Ascension is a comparator builder. It builds comparators for composite keys. I
+created it because I find myself writing this function over and over again.</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compare</span> (<span class="hljs-params">left, right</span>) </span>{
+    <span class="hljs-keyword">var</span> compare = left.lastName &lt; right.lastName
+                ? <span class="hljs-number">-1</span> : left.lastName &gt; right.lastName
+                     ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>
+    <span class="hljs-keyword">if</span> (compare != <span class="hljs-number">0</span>) {
+        compare = left.lastName &lt; right.lastName
+                ? <span class="hljs-number">-1</span> : left.lastName &gt; right.lastName
+                     ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>
+    }
+    <span class="hljs-keyword">return</span> compare
+}
+</code></pre>
+<p>Not last name first specifically, but that sort of compare these properties and
+if they&apos;re equal, then compare those properties.</p>
+<p>What I really don&apos;t like about these comparators is having to unit test these
+functions because they&apos;re usually not directly accessible to the code, so I have
+to expose them for unit testing or else set up and tear down more complicated
+tests to tickle each branch with different values.</p>
+<p>With Ascension the comparator is declarative.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> comparator = ascension([ <span class="hljs-built_in">String</span>, <span class="hljs-built_in">String</span> ], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">object</span>) </span>{
+    <span class="hljs-keyword">return</span> [ object.lastName, object.firstName ]
+})
+</code></pre>
+<p>Now the comparator only needs to be invoked once in a unit test to get complete
+coverage.</p>
+<p>The first argument is an array with comparator methods for each member of the
+composite key. The second argument is a method that returns an array that
+contains the members of the composite key.</p>
+<p>Heres an example with a single field key.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> comparator = ascension([ <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{ <span class="hljs-keyword">return</span> left - right } ], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">object</span>) </span>{
+    <span class="hljs-keyword">return</span> [ object.createdAt ]
+})
+</code></pre>
+<p>The above can be simplified by using <code>Numeric</code> to tell Ascention to use a
+default numeric comparator.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> comparator = ascension([ Numeric ], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">object</span>) </span>{
+    <span class="hljs-keyword">return</span> [ object.createdAt ]
+})
+</code></pre>
+<p>You can use both <code>Numeric</code> and <code>String</code> as sigils.</p>
 </div>
   </div>
   <!-- todo: move into an edify plugin-->

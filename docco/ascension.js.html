@@ -27,10 +27,81 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
+              <p>Declarative comparator logic. Saves me the trouble of unit testing the
+ternary potpourri of a string comparator time and again. Saves me the bother
+of unit testing a composite comparator with it’s handful of different
+branches.</p>
 
             </div>
 
-            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-number">1</span></pre></div></div>
+        </li>
+
+
+        <li id="section-2">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">comparators, extractor</span>) </span>{</pre></div></div>
+
+        </li>
+
+
+        <li id="section-3">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Convert <code>Number</code> to a numeric comparator and <code>String</code> to a comparator
+that casts to string and uses operators.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>    comparators = comparators.map(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">comparator</span>) </span>{
+        <span class="hljs-keyword">if</span> (comparator === <span class="hljs-built_in">Number</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{ <span class="hljs-keyword">return</span> +left - +right }
+        }
+        <span class="hljs-keyword">if</span> (comparator === <span class="hljs-built_in">String</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{
+                left = <span class="hljs-built_in">String</span>(left)
+                right = <span class="hljs-built_in">String</span>(right)
+                <span class="hljs-keyword">return</span> left &lt; right ? <span class="hljs-number">-1</span> : left &gt; right ? <span class="hljs-number">2</span> : <span class="hljs-number">0</span>
+            }
+        }
+        <span class="hljs-keyword">return</span> comparator
+    })</pre></div></div>
+
+        </li>
+
+
+        <li id="section-4">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Work through the array of comparators.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{
+        <span class="hljs-keyword">var</span> compare = <span class="hljs-number">0</span>
+
+        left = extractor(left)
+        right = extractor(right)
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, I = comparators.length; compare == <span class="hljs-number">0</span> &amp;&amp; i &lt; I; i++) {
+            compare = comparators[i](left[i], right[i])
+        }
+
+        <span class="hljs-keyword">return</span> compare
+    }
+}</pre></div></div>
 
         </li>
 
