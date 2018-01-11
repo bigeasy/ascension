@@ -7,7 +7,7 @@ if ! which istanbul > /dev/null; then
 
 Istanbul is required to run coverage. Install Istanbul:
 
-    npm install istanbul
+    npm install -g istanbul
 
 EOF
     exit 1
