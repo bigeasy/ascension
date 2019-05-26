@@ -11,6 +11,11 @@ module.exports = function (comparators, extractor) {
         if (comparator === Number) {
             return function (left, right) { return +left - +right }
         }
+        if (comparator == BigInt) {
+            return function (left, right) {
+                return left < right ? -1 : left > right ? 1 : 0
+            }
+        }
         if (comparator === String) {
             return function (left, right) {
                 left = String(left)

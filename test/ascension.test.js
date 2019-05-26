@@ -34,4 +34,25 @@ describe('ascension', () => {
             number: 1, string: 'a'
         }) == 0, 'composite and string equal')
     })
+
+    it('can create a bigints', () => {
+        const comparator = ascension([ BigInt ], function (object) {
+            return [ object.integer ]
+        })
+        assert(comparator({
+            integer: BigInt(Number.MAX_SAFE_INTEGER) * 2n
+        }, {
+            integer: 0n
+        }) > 0, 'greater than')
+        assert(comparator({
+            integer: 0n
+        }, {
+            integer: BigInt(Number.MAX_SAFE_INTEGER) * 2n
+        }) < 0, 'less than')
+        assert(comparator({
+            integer: BigInt(Number.MAX_SAFE_INTEGER) * 2n
+        }, {
+            integer: BigInt(Number.MAX_SAFE_INTEGER) * 2n
+        }) == 0, 'equal')
+    })
 })
