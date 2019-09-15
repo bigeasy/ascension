@@ -6,9 +6,7 @@ A comparator function builder.
 | Issues        | https://github.com/bigeasy/ascension/issues   |
 | CI            | https://travis-ci.org/bigeasy/ascension       |
 | Coverage:     | https://codecov.io/gh/bigeasy/ascension       |
-| ---           | ---                                           |
 | Install       |`npm install ascension`                        |
-| ---           | ---                                           |
 | License       | MIT                                           |
 
 To learn everything you want to know about Ascension start here:
