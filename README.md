@@ -1,6 +1,8 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A comparator function builder.
 
-| Header        | Header                                        |
+| What          | Where                                         |
 | --- | --- |
 | Discussion    | https://github.com/bigeasy/ascension/issues/1 |
 | Documentation | https://bigeasy.github.io/ascension           |
@@ -8,8 +10,12 @@ A comparator function builder.
 | Issues        | https://github.com/bigeasy/ascension/issues   |
 | CI            | https://travis-ci.org/bigeasy/ascension       |
 | Coverage:     | https://codecov.io/gh/bigeasy/ascension       |
-| Install       |`npm install ascension`                        |
-| License       | MIT                                           |
+
+
+```
+npm install ascension
+```
+
 
 To learn everything you want to know about Ascension start here:
 
