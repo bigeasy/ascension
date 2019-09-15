@@ -1,5 +1,7 @@
 A comparator function builder.
 
+| Header        | Header                                        |
+| --- | --- |
 | Discussion    | https://github.com/bigeasy/ascension/issues/1 |
 | Documentation | https://bigeasy.github.io/ascension           |
 | Source        | https://github.com/bigeasy/ascension          |
