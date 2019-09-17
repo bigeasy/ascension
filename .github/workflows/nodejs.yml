@@ -27,11 +27,7 @@ jobs:
         CI: true
     - name: generate codecov report
       run: nyc report --reporter=text-lcov > coverage.lcov
-    - name: inspect potentional codecov publish command line
-      run: echo codecov --branch ${GITHUB_REF##*/}
     - name: ship coverage to codecov
-      run: |
-        echo codecov --branch ${GITHUB_REF##*/}
-        codecov --branch ${GITHUB_REF##*/}
+      run: codecov --branch=${GITHUB_REF##*/}
       env:
         CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
