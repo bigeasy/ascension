@@ -17,8 +17,3 @@ A comparator function builder.
 ```
 npm install ascension
 ```
-
-
-To learn everything you want to know about Ascension start here:
-
-    http://bigeasy.github.io/ascension
