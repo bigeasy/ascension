@@ -13,7 +13,7 @@ module.exports = function (comparators, extractor) {
         }
         if (comparator == BigInt) {
             return function (left, right) {
-                return left < right ? -1 : left > right ? 1 : 0
+                return BigInt(left) < BigInt(right) ? -1 : BigInt(left) > BigInt(right) ? 1 : 0
             }
         }
         if (comparator === String) {
