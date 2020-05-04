@@ -1,6 +1,6 @@
 {
     "name":                 "ascension",
-    "version":              "1.1.4",
+    "version":              "1.1.5",
     "description":
 
       "Comparator function builder.",
@@ -23,7 +23,7 @@
     },
     "devDependencies":
     {
-                            "proof":                        "^8.0.0-alpha.0"
+                            "proof":                        "^8.0.0-alpha.9"
     },
     "main":                 "ascension",
     "scripts":
