@@ -5,9 +5,15 @@
 
 //
 module.exports = function (comparators, extractor) {
+    const directions = comparators.map(function (comparator) {
+        return Array.isArray(comparator) ? comparator[1] : 1
+    })
     // Convert `Number` to a numeric comparator and `String` to a comparator
     // that casts to string and uses operators.
     comparators = comparators.map(function (comparator) {
+        if (Array.isArray(comparator)) {
+            comparator = comparator[0]
+        }
         if (comparator === Number) {
             return function (left, right) { return +left - +right }
         }
@@ -33,7 +39,7 @@ module.exports = function (comparators, extractor) {
         right = extractor(right)
 
         for (var i = 0, I = comparators.length; compare == 0 && i < I; i++) {
-            compare = comparators[i](left[i], right[i])
+            compare = comparators[i](left[i], right[i]) * directions[i]
         }
 
         return compare

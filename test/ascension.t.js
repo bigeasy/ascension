@@ -1,4 +1,4 @@
-require('proof')(9, (okay) => {
+require('proof')(10, okay => {
     const ascension = require('..')
 
     const comparator = ascension([ function (left, right) {
@@ -49,4 +49,14 @@ require('proof')(9, (okay) => {
     }, {
         integer: BigInt(Number.MAX_SAFE_INTEGER) * 2n
     }) == 0, 'bigint equal')
+
+    const descending = ascension([[ Number, -1 ], [ String, 1 ]], function (object) {
+        return [ object.number, object.string ]
+    })
+
+    okay(descending({
+        number: 1, string: 'a'
+    }, {
+        number: 0, string: 'a'
+    }) < 0, 'descending')
 })
