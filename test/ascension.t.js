@@ -1,4 +1,4 @@
-require('proof')(10, okay => {
+require('proof')(14, okay => {
     const ascension = require('..')
 
     const comparator = ascension([ function (left, right) {
@@ -59,4 +59,11 @@ require('proof')(10, okay => {
     }, {
         number: 0, string: 'a'
     }) < 0, 'descending')
+
+    const arrayed = ascension([ Number, Number ], object => object)
+
+    okay(arrayed([ 1, 1 ], [ 1, 1 ]) == 0, 'arrayed equal')
+    okay(arrayed([], []) == 0, 'arrayed empty equal')
+    okay(arrayed([ 1, 1 ], [ 1 ]) > 0, 'arrayed greater than')
+    okay(arrayed([ 1 ], [ 1, 1 ]) < 0, 'arrayed less than')
 })

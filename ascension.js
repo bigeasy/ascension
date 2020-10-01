@@ -38,10 +38,18 @@ module.exports = function (comparators, extractor) {
         left = extractor(left)
         right = extractor(right)
 
-        for (var i = 0, I = comparators.length; compare == 0 && i < I; i++) {
+        for (
+            let i = 0, I = Math.min(left.length, right.length);
+            compare == 0 && i < I;
+            i++
+        ) {
             compare = comparators[i](left[i], right[i]) * directions[i]
         }
 
-        return compare
+        if (compare != 0) {
+            return compare
+        }
+
+        return left.length - right.length
     }
 }
