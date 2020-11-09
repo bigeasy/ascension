@@ -1,10 +1,12 @@
+const assert = require('assert')
+
 // Declarative comparator logic. Saves me the trouble of unit testing the
 // ternary potpourri of a string comparator time and again. Saves me the bother
 // of unit testing a composite comparator with it's handful of different
 // branches.
 
 //
-module.exports = function (comparators, extractor) {
+module.exports = function (comparators) {
     const directions = comparators.map(function (comparator) {
         return Array.isArray(comparator) ? comparator[1] : 1
     })
@@ -33,10 +35,9 @@ module.exports = function (comparators, extractor) {
     })
     // Work through the array of comparators.
     return function (left, right) {
+        assert(Array.isArray(left))
+        assert(Array.isArray(right))
         var compare = 0
-
-        left = extractor(left)
-        right = extractor(right)
 
         for (
             let i = 0, I = Math.min(left.length, right.length);
@@ -50,6 +51,8 @@ module.exports = function (comparators, extractor) {
             return compare
         }
 
-        return left.length - right.length
+        compare = left.length - right.length
+        assert(!isNaN(compare))
+        return compare
     }
 }
