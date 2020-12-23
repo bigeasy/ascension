@@ -11,6 +11,29 @@
   <div id="container">
     <div id="background"></div>
 
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+
+
+                <a class="source" href="ascension.js.html">
+                  ascension.js
+                </a>
+
+
+                <a class="source" href="readme.t.js.html">
+                  readme.t.js
+                </a>
+
+            </div>
+          </div>
+        </li>
+      </ul>
+
     <ul class="sections">
 
           <li id="title">
@@ -84,18 +107,27 @@ that casts to string and uses operators.</p>
             comparator = comparator[<span class="hljs-number">0</span>]
         }
         <span class="hljs-keyword">if</span> (comparator === <span class="hljs-built_in">Number</span>) {
-            <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{ <span class="hljs-keyword">return</span> +left - +right }
+            <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{
+                <span class="hljs-keyword">return</span> (+left &gt; +right) - (+left &lt; +right)
+            }
         }
         <span class="hljs-keyword">if</span> (comparator == BigInt) {
             <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{
-                <span class="hljs-keyword">return</span> BigInt(left) &lt; BigInt(right) ? -<span class="hljs-number">1</span> : BigInt(left) &gt; BigInt(right) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>
+                left = BigInt(left)
+                right = BigInt(right)
+                <span class="hljs-keyword">return</span> (left &gt; right) - (left &lt; right)
             }
         }
         <span class="hljs-keyword">if</span> (comparator === <span class="hljs-built_in">String</span>) {
             <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{
                 left = <span class="hljs-built_in">String</span>(left)
                 right = <span class="hljs-built_in">String</span>(right)
-                <span class="hljs-keyword">return</span> left &lt; right ? -<span class="hljs-number">1</span> : left &gt; right ? <span class="hljs-number">2</span> : <span class="hljs-number">0</span>
+                <span class="hljs-keyword">return</span> (left &gt; right) - (left &lt; right)
+            }
+        }
+        <span class="hljs-keyword">if</span> (comparator === <span class="hljs-built_in">Boolean</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">left, right</span>) </span>{
+                <span class="hljs-keyword">return</span> (!!left &gt; !!right) - (!!left &lt; !!right)
             }
         }
         <span class="hljs-keyword">return</span> comparator
