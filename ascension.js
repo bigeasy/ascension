@@ -17,18 +17,27 @@ module.exports = function (comparators) {
             comparator = comparator[0]
         }
         if (comparator === Number) {
-            return function (left, right) { return +left - +right }
+            return function (left, right) {
+                return (+left > +right) - (+left < +right)
+            }
         }
         if (comparator == BigInt) {
             return function (left, right) {
-                return BigInt(left) < BigInt(right) ? -1 : BigInt(left) > BigInt(right) ? 1 : 0
+                left = BigInt(left)
+                right = BigInt(right)
+                return (left > right) - (left < right)
             }
         }
         if (comparator === String) {
             return function (left, right) {
                 left = String(left)
                 right = String(right)
-                return left < right ? -1 : left > right ? 2 : 0
+                return (left > right) - (left < right)
+            }
+        }
+        if (comparator === Boolean) {
+            return function (left, right) {
+                return (!!left > !!right) - (!!left < !!right)
             }
         }
         return comparator
