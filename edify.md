@@ -81,7 +81,7 @@ repeatedly.
 
 ```javascript
 //{ "name": "overview" }
-function yetAnotherCompare (left, right) {
+function comparator (left, right) {
     if (left.length == 0 || right.length == 0) {
         return left.length - right.length
     }
@@ -108,16 +108,16 @@ typing out one of these little monsters.
 
 ```javascript
 //{ "name": "overview" }
-okay(yetAnotherCompare([ 'Hello' ], []) > 0, 'empty array')
-okay(yetAnotherCompare([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
-okay(yetAnotherCompare([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
-okay(yetAnotherCompare([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
-okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
-okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
-okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
-okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
-okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
-okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
+okay(comparator([ 'Hello' ], []) > 0, 'empty array')
+okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
+okay(comparator([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
+okay(comparator([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
+okay(comparator([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
+okay(comparator([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
+okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
+okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
+okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
+okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
 ```
 
 We can easily create the same function with Ascension.
@@ -133,7 +133,7 @@ We can easily create the same function with Ascension.
 //{ "name": "comparator", "code": { "path": "'..'" }, "text": { "path": "'ascension'" } }
 const ascension = require(%(path)s)
 
-const comparator = ascension([ String, Boolean, Number ])
+const generated = ascension([ String, Boolean, Number ])
 ```
 
 It is not necessary to unit test this function in as much detail. It should just
@@ -143,16 +143,16 @@ But, it does pass the above tests.
 
 ```javascript
 //{ "name": "comparator" }
-okay(comparator([ 'Hello' ], []) > 0, 'empty array')
-okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
-okay(comparator([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
-okay(comparator([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
-okay(comparator([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
-okay(comparator([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
-okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
-okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
-okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
-okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
+okay(generated([ 'Hello' ], []) > 0, 'empty array')
+okay(generated([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
+okay(generated([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
+okay(generated([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
+okay(generated([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
+okay(generated([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
+okay(generated([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
+okay(generated([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
+okay(generated([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
+okay(generated([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
 ```
 
 And so I save myself some coding and testing tedium.
