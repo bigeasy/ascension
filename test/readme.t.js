@@ -1,101 +1,121 @@
-require('proof')(23, okay => {
+// [![Actions Status](https://github.com/bigeasy/ascension/workflows/Node%20CI/badge.svg)](https://github.com/bigeasy/ascension/actions)
+// [![codecov](https://codecov.io/gh/bigeasy/ascension/branch/master/graph/badge.svg)](https://codecov.io/gh/bigeasy/ascension)
+// [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+//
+// A comparator function builder.
+//
+// | What          | Where                                         |
+// | --- | --- |
+// | Discussion    | https://github.com/bigeasy/ascension/issues/1 |
+// | Documentation | https://bigeasy.github.io/ascension           |
+// | Source        | https://github.com/bigeasy/ascension          |
+// | Issues        | https://github.com/bigeasy/ascension/issues   |
+// | CI            | https://travis-ci.org/bigeasy/ascension       |
+// | Coverage:     | https://codecov.io/gh/bigeasy/ascension       |
+// | License:      | MIT                                           |
+//
+// Ascension installs from NPM.
+
+// ## Living `README.md`
+//
+// This `README.md` is also a unit test using the
+// [Proof](https://github.com/bigeasy/proof) unit test framework. We'll use the
+// Proof `okay` function to assert out statements in the readme. A Proof unit test
+// generally looks like this.
+
+require('proof')(13, okay => {
+    // ## Overview
+    //
+    // Ascension exports a single function that you can name `ascension`.
+
     const ascension = require('..')
 
-    //
+    // Using ascension you can create comparator functions.
 
-    // Ascension creates a comparator that compares two arrays. Ascension only
-    // works with arrays.
-
-
-    // You declare a comparator by declaring the type of values you want to
-    // compare in an array. When you compare you must always compare arrays.
-
-    //
     {
-        const comparator = ascension([ String ])
+        const comparator = ascension([ String, Number ])
 
-        okay(comparator([ 'a' ], [ 'a' ]) == 0, 'string equal')
-        okay(comparator([ 'a' ], [ 'z' ]) < 0, 'string less than')
-        okay(comparator([ 'z' ], [ 'a' ]) > 0, 'string greater than')
+        okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'partial compare equal')
+        okay(comparator([ 'Hello', 1 ], [ 'Hello', 1 ]), 0, 'full compare equal')
     }
-    //
 
-    // Ascension only works with arrays because it is meant to simplify
-    // composite comparisons. When I need a comparator that is for a scalar
-    // value, I don't seem to have any problems creating a simple scalar
-    // comparator. They always look like this.
-
+    // Ascension is a comparator function geneator. It generates a comparator suitable
+    // for use with
+    // [`Array.sort()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
+    // An `Array.sort()` compatiable comparator compares two values, and returns less
+    // than zero if the first value is less than the second, greater than zero if the
+    // first value is greater than the second and zero if the two values are equal.
     //
-    {
-        function comparator (left, right) {
-            return (left > right) - (left < right)
+    // Comparator functions are used for ordering throughout the Node.js ecosystem in
+    // popular libraries like [`bintrees`](https://github.com/vadimg/js_bintrees). We
+    // use Acension to generate comparators for the
+    // [Strata](https://bigeasy.com/github/strata)/[Memento](https://bigeasy.com/github/strata)
+    // persistent b-tree modules and their supporting modules.
+    //
+    // I created ascension when I found myself typing out comparator functions
+    // repeatedly.
+
+    function yetAnotherCompare (left, right) {
+        if (left.length == 0 || right.length == 0) {
+            return left.length - right.length
         }
-
-        okay(comparator('a', 'a') == 0, 'string equal')
-        okay(comparator('a', 'z') < 0, 'string less than')
-        okay(comparator('z', 'a') > 0, 'string greater than')
+        let compare = left[0] > right[0] ? 1 : left[0] < right[0] ? -1 : 0
+        if (compare != 0) {
+            return compare
+        }
+        if (left.length == 1 || right.length == 1) {
+            return left.length - right.length
+        }
+        compare = +left[1] - +right[1]
+        if (compare != 0) {
+            return compare
+        }
+        if (left.length == 2 || right.length == 2) {
+            return left.length - right.length
+        }
+        return left[2] > right[2] ? 1 : left[2] < right[2] ? -1 : 0
     }
-    //
 
-    // Composite comparators are a little more tedious, though, and Ascension
-    // makes them a little less tedious.
+    // Unit testing a comparator function and obtaining full coverage was as tedious as
+    // typing out one of these little monsters.
 
-    // To create a composite comparator you provide an array of the types of the
-    // composite key.
+    okay(yetAnotherCompare([ 'Hello' ], []) > 0, 'greater than empty array')
+    okay(yetAnotherCompare([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
+    okay(yetAnotherCompare([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
+    okay(yetAnotherCompare([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
+    okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello' ]) > 0, 'greater than only string')
+    okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
+    okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'greater than only string and boolean')
+    okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
+    okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
+    okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
 
-    //
+    // We can easily create the same function with Ascension.
+
     {
-        const comparator = ascension([ Number, String ])
+        const comparator = ascension([ String, Boolean, Number ])
 
-        okay(comparator([ 1, 'a' ], [ 1, 'a' ]) == 0, 'composite equal')
-        okay(comparator([ 1, 'a' ], [ 1, 'b' ]) < 0, 'composite second column less then')
-        okay(comparator([ 1, 'b' ], [ 1, 'a' ]) > 0, 'composite second column greater than')
+        // It is not necessary to unit test this function in as much detail. It should just
+        // work because Ascension itself has 100% test coverage.
+        //
+        // But, it does pass the above tests.
+
+        okay(comparator([ 'Hello' ], []) > 0, 'greater than empty array')
+        okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
+        okay(comparator([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
+        okay(comparator([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
+        okay(comparator([ 'Hello', true ], [ 'Hello' ]) > 0, 'greater than only string')
+        okay(comparator([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
+        okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'greater than only string and boolean')
+        okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
+        okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
+        okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
     }
-    //
-
-    // In addition to `String` and `Number` you can compare `BigInt`s ...
-
-    //
-    {
-        const comparator = ascension([ BigInt ])
-
-        okay(comparator([ BigInt(Number.MAX_SAFE_INTEGER) * 2n ], [ 0n ]) > 0, 'bigint greater than')
-        okay(comparator([ 0n ], [ BigInt(Number.MAX_SAFE_INTEGER) * 2n ]) < 0, 'bigint less than')
-        okay(comparator([ BigInt(Number.MAX_SAFE_INTEGER) * 2n ], [ BigInt(Number.MAX_SAFE_INTEGER) * 2n ]) == 0, 'bigint equal')
-    }
-    //
-
-    // ... and `Boolean`s.
-
-    //
-    {
-        const booleans = ascension([ Number, Number ])
-
-        okay(booleans([ true ], [ true ]), 0, 'boolean equal')
-        okay(booleans([ true ], [ false ]) > 0, 'boolean less than')
-        okay(booleans([ false ], [ true ]) < 0, 'boolean greater than')
-    }
-
-
-    const comparator = ascension([ function (left, right) {
-        return left - right
-    } ])
-
-    okay(comparator([ 1 ], [ 2 ]) < 0, 'less than')
-    okay(comparator([ 2 ], [ 1 ]) > 0, 'greater than')
-    okay(comparator([ 1 ], [ 1 ]) == 0, 'equal')
-
-
-
-    const descending = ascension([[ Number, -1 ], [ String, 1 ]])
-
-    okay(descending([ 1, 'a' ], [ 0, 'a' ]) < 0, 'descending')
-
-    const arrayed = ascension([ Number, Number ])
-
-    okay(arrayed([ 1, 1 ], [ 1, 1 ]) == 0, 'arrayed equal')
-    okay(arrayed([], []) == 0, 'arrayed empty equal')
-    okay(arrayed([ 1, 1 ], [ 1 ]) > 0, 'arrayed greater than')
-    okay(arrayed([ 1 ], [ 1, 1 ]) < 0, 'arrayed less than')
-
 })
+
+// You can run this unit test yourself to see the output from the various
+// code sections of the readme.
+
+// And so I save myself some coding and testing tedium.
+//
+// ## Usage

@@ -17,6 +17,7 @@ A comparator function builder.
 Ascension installs from NPM.
 
 ```
+//{ "mode": "text" }
 npm install ascension
 ```
 
@@ -28,18 +29,26 @@ Proof `okay` function to assert out statements in the readme. A Proof unit test
 generally looks like this.
 
 ```javascript
-require('proof')(4, okay => {
-    okay('always okay')
-    okay(true, 'okay if true')
-    okay(1, 1, 'okay if equal')
-    okay({ value: 1 }, { value: 1 }, 'okay if deep strict equal')
+//{ "code": { "tests": 13 }, "text": { "tests": 4  } }
+require('proof')(%(tests)d, okay => {
+    //{ "include": "test", "mode": "code" }
+    //{ "include": "proof" }
 })
+```
+
+```javascript
+//{ "name": "proof", "mode": "text" }
+okay('always okay')
+okay(true, 'okay if true')
+okay(1, 1, 'okay if equal')
+okay({ value: 1 }, { value: 1 }, 'okay if deep strict equal')
 ```
 
 You can run this unit test yourself to see the output from the various
 code sections of the readme.
 
 ```text
+//{ "mode": "text" }
 git clone git@github.com:bigeasy/duplicitous.git
 cd duplicitous
 npm install --no-package-lock --no-save
@@ -51,16 +60,20 @@ node test/readme.t.js
 Ascension exports a single function that you can name `ascension`.
 
 ```javascript
-const ascension = require('ascension')
+//{ "name": "test", "code": { "path": "'..'" }, "text": { "path": "'ascension'" } }
+const ascension = require(%(path)s)
 ```
 
 Using ascension you can create comparator functions.
 
 ```javascript
-const comparator = ascension([ String, Number ])
+//{ "unblock": true, "name": "test" }
+{
+    const comparator = ascension([ String, Number ])
 
-okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'partial compare equal')
-okay(comparator([ 'Hello', 1 ], [ 'Hello', 1 ]), 0, 'full compare equal')
+    okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'partial compare equal')
+    okay(comparator([ 'Hello', 1 ], [ 'Hello', 1 ]), 0, 'full compare equal')
+}
 ```
 
 Ascension is a comparator function geneator. It generates a comparator suitable
@@ -80,6 +93,7 @@ I created ascension when I found myself typing out comparator functions
 repeatedly.
 
 ```javascript
+//{ "name": "test" }
 function yetAnotherCompare (left, right) {
     if (left.length == 0 || right.length == 0) {
         return left.length - right.length
@@ -106,6 +120,7 @@ Unit testing a comparator function and obtaining full coverage was as tedious as
 typing out one of these little monsters.
 
 ```javascript
+//{ "name": "test" }
 okay(yetAnotherCompare([ 'Hello' ], []) > 0, 'greater than empty array')
 okay(yetAnotherCompare([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
 okay(yetAnotherCompare([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
@@ -120,7 +135,17 @@ okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number 
 
 We can easily create the same function with Ascension.
 
+
 ```javascript
+//{ "name": "test", "mode": "code" }
+{
+    //{ "include": "comparator" }
+}
+```
+
+
+```javascript
+//{ "name": "comparator" }
 const comparator = ascension([ String, Boolean, Number ])
 ```
 
@@ -130,6 +155,7 @@ work because Ascension itself has 100% test coverage.
 But, it does pass the above tests.
 
 ```javascript
+//{ "name": "comparator" }
 okay(comparator([ 'Hello' ], []) > 0, 'greater than empty array')
 okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
 okay(comparator([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
