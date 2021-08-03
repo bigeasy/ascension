@@ -29,7 +29,7 @@ Proof `okay` function to assert out statements in the readme. A Proof unit test
 generally looks like this.
 
 ```javascript
-//{ "code": { "tests": 13 }, "text": { "tests": 4  } }
+//{ "code": { "tests": 22 }, "text": { "tests": 4  } }
 require('proof')(%(tests)d, okay => {
     //{ "include": "test", "mode": "code" }
     //{ "include": "proof" }
@@ -57,25 +57,12 @@ node test/readme.t.js
 
 ## Overview
 
-Ascension exports a single function that you can name `ascension`.
-
 ```javascript
-//{ "name": "test", "code": { "path": "'..'" }, "text": { "path": "'ascension'" } }
-const ascension = require(%(path)s)
-```
-
-Using ascension you can create comparator functions.
-
-```javascript
-//{ "unblock": true, "name": "test" }
+//{ "name": "test", "mode": "code" }
 {
-    const comparator = ascension([ String, Number ])
-
-    okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'partial compare equal')
-    okay(comparator([ 'Hello', 1 ], [ 'Hello', 1 ]), 0, 'full compare equal')
+    //{ "include": "overview" }
 }
 ```
-
 Ascension is a comparator function geneator. It generates a comparator suitable
 for use with
 [`Array.sort()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
@@ -93,7 +80,7 @@ I created ascension when I found myself typing out comparator functions
 repeatedly.
 
 ```javascript
-//{ "name": "test" }
+//{ "name": "overview" }
 function yetAnotherCompare (left, right) {
     if (left.length == 0 || right.length == 0) {
         return left.length - right.length
@@ -112,7 +99,7 @@ function yetAnotherCompare (left, right) {
     if (left.length == 2 || right.length == 2) {
         return left.length - right.length
     }
-    return left[0] > right[0] ? 1 : left[0] < right[0] ? -1 : 0
+    return left[2] > right[2] ? 1 : left[2] < right[2] ? -1 : 0
 }
 ```
 
@@ -120,14 +107,14 @@ Unit testing a comparator function and obtaining full coverage was as tedious as
 typing out one of these little monsters.
 
 ```javascript
-//{ "name": "test" }
-okay(yetAnotherCompare([ 'Hello' ], []) > 0, 'greater than empty array')
+//{ "name": "overview" }
+okay(yetAnotherCompare([ 'Hello' ], []) > 0, 'empty array')
 okay(yetAnotherCompare([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
 okay(yetAnotherCompare([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
 okay(yetAnotherCompare([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
-okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello' ]) > 0, 'greater than only string')
+okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
 okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
-okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'greater than only string and boolean')
+okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
 okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
 okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
 okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
@@ -135,17 +122,17 @@ okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number 
 
 We can easily create the same function with Ascension.
 
-
 ```javascript
-//{ "name": "test", "mode": "code" }
+//{ "name": "overview", "mode": "code" }
 {
     //{ "include": "comparator" }
 }
 ```
 
-
 ```javascript
-//{ "name": "comparator" }
+//{ "name": "comparator", "code": { "path": "'..'" }, "text": { "path": "'ascension'" } }
+const ascension = require(%(path)s)
+
 const comparator = ascension([ String, Boolean, Number ])
 ```
 
@@ -156,13 +143,13 @@ But, it does pass the above tests.
 
 ```javascript
 //{ "name": "comparator" }
-okay(comparator([ 'Hello' ], []) > 0, 'greater than empty array')
+okay(comparator([ 'Hello' ], []) > 0, 'empty array')
 okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
 okay(comparator([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
 okay(comparator([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
-okay(comparator([ 'Hello', true ], [ 'Hello' ]) > 0, 'greater than only string')
+okay(comparator([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
 okay(comparator([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
-okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'greater than only string and boolean')
+okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
 okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
 okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
 okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
@@ -171,3 +158,20 @@ okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part le
 And so I save myself some coding and testing tedium.
 
 ## Usage
+
+Ascension exports a single function that you can name `ascension`.
+
+```javascript
+//{ "name": "test", "code": { "path": "'..'" }, "text": { "path": "'ascension'" } }
+const ascension = require(%(path)s)
+```
+
+```javascript
+//{ "unblock": true, "name": "test" }
+{
+    const comparator = ascension([ String, Number ])
+
+    okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'partial compare equal')
+    okay(comparator([ 'Hello', 1 ], [ 'Hello', 1 ]), 0, 'full compare equal')
+}
+```

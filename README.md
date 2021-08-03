@@ -48,21 +48,6 @@ node test/readme.t.js
 
 ## Overview
 
-Ascension exports a single function that you can name `ascension`.
-
-```javascript
-const ascension = require('ascension')
-```
-
-Using ascension you can create comparator functions.
-
-```javascript
-const comparator = ascension([ String, Number ])
-
-okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'partial compare equal')
-okay(comparator([ 'Hello', 1 ], [ 'Hello', 1 ]), 0, 'full compare equal')
-```
-
 Ascension is a comparator function geneator. It generates a comparator suitable
 for use with
 [`Array.sort()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
@@ -98,7 +83,7 @@ function yetAnotherCompare (left, right) {
     if (left.length == 2 || right.length == 2) {
         return left.length - right.length
     }
-    return left[0] > right[0] ? 1 : left[0] < right[0] ? -1 : 0
+    return left[2] > right[2] ? 1 : left[2] < right[2] ? -1 : 0
 }
 ```
 
@@ -106,13 +91,13 @@ Unit testing a comparator function and obtaining full coverage was as tedious as
 typing out one of these little monsters.
 
 ```javascript
-okay(yetAnotherCompare([ 'Hello' ], []) > 0, 'greater than empty array')
+okay(yetAnotherCompare([ 'Hello' ], []) > 0, 'empty array')
 okay(yetAnotherCompare([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
 okay(yetAnotherCompare([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
 okay(yetAnotherCompare([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
-okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello' ]) > 0, 'greater than only string')
+okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
 okay(yetAnotherCompare([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
-okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'greater than only string and boolean')
+okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
 okay(yetAnotherCompare([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
 okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
 okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
@@ -121,6 +106,8 @@ okay(yetAnotherCompare([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number 
 We can easily create the same function with Ascension.
 
 ```javascript
+const ascension = require('ascension')
+
 const comparator = ascension([ String, Boolean, Number ])
 ```
 
@@ -130,13 +117,13 @@ work because Ascension itself has 100% test coverage.
 But, it does pass the above tests.
 
 ```javascript
-okay(comparator([ 'Hello' ], []) > 0, 'greater than empty array')
+okay(comparator([ 'Hello' ], []) > 0, 'empty array')
 okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'string part equal')
 okay(comparator([ 'World' ], [ 'Hello' ]) > 0, 'string part greater than')
 okay(comparator([ 'Hello' ], [ 'World' ]) < 0, 'string part less than')
-okay(comparator([ 'Hello', true ], [ 'Hello' ]) > 0, 'greater than only string')
+okay(comparator([ 'Hello', true ], [ 'Hello' ]) > 0, 'only string')
 okay(comparator([ 'Hello', true ], [ 'Hello', false ]) > 0, 'boolean part greater than')
-okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'greater than only string and boolean')
+okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true ]) > 0, 'only string and boolean')
 okay(comparator([ 'Hello', true, 1 ], [ 'Hello', true, 0 ]) > 0, 'number part greater than')
 okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 0 ]), 0, 'number part equal')
 okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part less than')
@@ -145,3 +132,16 @@ okay(comparator([ 'Hello', true, 0 ], [ 'Hello', true, 1 ]) < 0, 'number part le
 And so I save myself some coding and testing tedium.
 
 ## Usage
+
+Ascension exports a single function that you can name `ascension`.
+
+```javascript
+const ascension = require('ascension')
+```
+
+```javascript
+const comparator = ascension([ String, Number ])
+
+okay(comparator([ 'Hello' ], [ 'Hello' ]), 0, 'partial compare equal')
+okay(comparator([ 'Hello', 1 ], [ 'Hello', 1 ]), 0, 'full compare equal')
+```
