@@ -97,5 +97,4 @@ require('proof')(23, okay => {
     okay(arrayed([], []) == 0, 'arrayed empty equal')
     okay(arrayed([ 1, 1 ], [ 1 ]) > 0, 'arrayed greater than')
     okay(arrayed([ 1 ], [ 1, 1 ]) < 0, 'arrayed less than')
-
 })
