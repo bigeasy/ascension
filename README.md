@@ -40,8 +40,8 @@ You can run this unit test yourself to see the output from the various
 code sections of the readme.
 
 ```text
-git clone git@github.com:bigeasy/duplicitous.git
-cd duplicitous
+git clone git@github.com:bigeasy/ascension.git
+cd ascension
 npm install --no-package-lock --no-save
 node test/readme.t.js
 ```

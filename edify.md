@@ -49,8 +49,8 @@ code sections of the readme.
 
 ```text
 //{ "mode": "text" }
-git clone git@github.com:bigeasy/duplicitous.git
-cd duplicitous
+git clone git@github.com:bigeasy/ascension.git
+cd ascension
 npm install --no-package-lock --no-save
 node test/readme.t.js
 ```
