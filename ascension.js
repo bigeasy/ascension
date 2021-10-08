@@ -38,12 +38,11 @@ function comparator (comparator) {
 //
 module.exports = function (...vargs) {
     if (Array.isArray(vargs[0])) {
-        const directions = vargs[0].map(function (comparator) {
-            return Array.isArray(comparator) ? comparator[1] : 1
-        })
-        // Convert `Number` to a numeric comparator and `String` to a comparator
-        // that casts to string and uses operators.
-        const comparators = vargs[0].map(comparator)
+        const slice = vargs[0].slice(0)
+        const comparators = []
+        while (slice.length != 0) {
+            comparators.push(module.exports.apply(null, slice.splice(0, slice[1] == 1 || slice[1] == -1 ? 2 : 1)))
+        }
         // Work through the array of comparators.
         return function (left, right) {
             assert(Array.isArray(left))
@@ -55,7 +54,7 @@ module.exports = function (...vargs) {
                 compare == 0 && i < I;
                 i++
             ) {
-                compare = comparators[i](left[i], right[i]) * directions[i]
+                compare = comparators[i](left[i], right[i])
             }
 
             if (compare != 0) {

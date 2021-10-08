@@ -312,19 +312,22 @@ partial comparisons. The reversed comparions make it simple to implement
 descending indices.
 
 To implemented an array comparator you specify the types in a single array
-argument to `ascension`.
+argument to `ascension`. If you want to sort a field descending you follow the
+type specification with a direction of `-1`.
+
+Here we sort by string and then by number descending.
 
 ```javascript
-const comparator = ascension([ String, Number ])
+const comparator = ascension([ String, Number, -1 ])
 
 okay(comparator([ 'a', 1 ], [ 'b', 1 ]) < 0, 'composite first part less than')
-okay(comparator([ 'a', 1 ], [ 'a', 2 ]) < 0, 'composite second part less than')
+okay(comparator([ 'a', 1 ], [ 'a', 2 ]) > 0, 'composite second part less than')
 okay(comparator([ 'b', 1 ], [ 'a', 1 ]) > 0, 'composite first part greater than')
-okay(comparator([ 'a', 2 ], [ 'a', 1 ]) > 0, 'composite second greater less than')
+okay(comparator([ 'a', 2 ], [ 'a', 1 ]) < 0, 'composite second greater less than')
 okay(comparator([ 'a', 1 ], [ 'a', 1 ]), 0, 'compoiste equal')
 
 okay(comparator([ 1, 1 ], [ '1', '1' ]), 0, 'compoite coalesced')
 
 const storted = [ [ 'a', 1 ], [ 'c', 2 ], [ 'b', 0 ], [ 'a', 0 ] ].sort(comparator)
-okay(storted, [ [ 'a', 0 ], [ 'a', 1 ], [ 'b', 0 ], [ 'c', 2 ] ], 'bigint sorted reversed')
+okay(storted, [ [ 'a', 1 ], [ 'a', 0 ], [ 'b', 0 ], [ 'c', 2 ] ], 'sorted ascending / descending')
 ```
