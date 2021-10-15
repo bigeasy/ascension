@@ -29,7 +29,7 @@ Proof `okay` function to assert out statements in the readme. A Proof unit test
 generally looks like this.
 
 ```javascript
-//{ "code": { "tests": 69 }, "text": { "tests": 4  } }
+//{ "code": { "tests": 72 }, "text": { "tests": 4  } }
 require('proof')(%(tests)d, okay => {
     //{ "include": "test", "mode": "code" }
     //{ "include": "proof" }
@@ -387,5 +387,37 @@ Here we sort by string and then by number descending.
 
     const storted = [ [ 'a', 1 ], [ 'c', 2 ], [ 'b', 0 ], [ 'a', 0 ] ].sort(comparator)
     okay(storted, [ [ 'a', 1 ], [ 'a', 0 ], [ 'b', 0 ], [ 'c', 2 ] ], 'sorted ascending / descending')
+}
+```
+
+For array comparisions of two unequal length arrays, Ascension will consider the
+shorter array less than the longer array of all the elements in the shorter
+array match the corresponding elements in the greater array.
+
+Using this comparator with binary search will place a partial compare at the
+first element that partially matches or where such an element would be located
+if it existed, i.e. and insert position.
+
+Reverse searching is more difficult. To reverse search on a compound comparision
+and find the last element that matches, you need to add an element after your
+partial key that is a most maxium value. Then you will not find any matching
+elements in the array using a binary search, but the index returned will be one
+beyond the first element that partially matches or where such an element would
+be if it existed.
+
+You can find the first element and then scan forward with a comparator made of...
+
+No wait, let's try this first...
+
+Okay, this might work.
+
+```javascript
+//{ "unblock": true, "name": "test" }
+{
+    const comparator = ascension([ String, Number, Infinity ])
+
+    okay(comparator([ 'a' ], [ 'a', 1 ]), 1, 'greater than')
+    okay(comparator([ 'a' ], [ 'b', 1 ]), -1, 'less than')
+    okay(comparator([ 'a', 1 ], [ 'a', 1 ]), 1, 'equal still greater than')
 }
 ```
