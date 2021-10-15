@@ -39,7 +39,6 @@ function comparator (comparator) {
 module.exports = function (...vargs) {
     if (Array.isArray(vargs[0])) {
         const slice = vargs[0].slice(0)
-        const reversed = slice[slice.length - 1] === Infinity && !! slice.pop()
         const comparators = []
         while (slice.length != 0) {
             comparators.push(module.exports.apply(null, slice.splice(0, slice[1] == 1 || slice[1] == -1 ? 2 : 1)))
@@ -60,10 +59,6 @@ module.exports = function (...vargs) {
 
             if (compare != 0) {
                 return compare
-            }
-
-            if (reversed) {
-                return 1
             }
 
             compare = left.length - right.length
