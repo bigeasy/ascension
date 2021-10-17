@@ -5,9 +5,6 @@ const assert = require('assert')
 // of unit testing a composite comparator with it's handful of different
 // branches.
 function comparator (comparator) {
-    if (Array.isArray(comparator)) {
-        comparator = comparator[0]
-    }
     if (comparator === Number) {
         return function (left, right) {
             return (+left > +right) - (+left < +right)
