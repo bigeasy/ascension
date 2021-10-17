@@ -33,34 +33,46 @@ function comparator (comparator) {
 }
 
 //
-module.exports = function (...vargs) {
+const ascension = module.exports = function (...vargs) {
     if (Array.isArray(vargs[0])) {
-        const slice = vargs[0].slice(0)
+        const slice = vargs.shift().slice(0)
+        const reversible = !! vargs.shift()
         const comparators = []
         while (slice.length != 0) {
-            comparators.push(module.exports.apply(null, slice.splice(0, slice[1] == 1 || slice[1] == -1 ? 2 : 1)))
+            if (Array.isArray(slice[0])) {
+                comparators.push(ascension(slice.shift(), reversible))
+            } else {
+                comparators.push(ascension.apply(null, slice.splice(0, slice[1] == 1 || slice[1] == -1 ? 2 : 1)))
+            }
+        }
+        if (reversible) {
+            return function (left, right, reversal = 1) {
+                assert(Array.isArray(left))
+                assert(Array.isArray(right))
+
+                for (let i = 0, I = Math.min(left.length, right.length); i < I; i++) {
+                    const compare = comparators[i](left[i], right[i], reversal)
+                    if (compare != 0) {
+                        return compare
+                    }
+                }
+
+                return left.length - right.length * reversal
+            }
         }
         // Work through the array of comparators.
         return function (left, right) {
             assert(Array.isArray(left))
             assert(Array.isArray(right))
-            var compare = 0
 
-            for (
-                let i = 0, I = Math.min(left.length, right.length);
-                compare == 0 && i < I;
-                i++
-            ) {
-                compare = comparators[i](left[i], right[i])
+            for (let i = 0, I = Math.min(left.length, right.length); i < I; i++) {
+                const compare = comparators[i](left[i], right[i])
+                if (compare != 0) {
+                    return compare
+                }
             }
 
-            if (compare != 0) {
-                return compare
-            }
-
-            compare = left.length - right.length
-            assert(!isNaN(compare))
-            return compare
+            return left.length - right.length
         }
     }
     const generated = comparator(vargs.shift())

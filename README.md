@@ -331,3 +331,37 @@ okay(comparator([ 1, 1 ], [ '1', '1' ]), 0, 'compoite coalesced')
 const storted = [ [ 'a', 1 ], [ 'c', 2 ], [ 'b', 0 ], [ 'a', 0 ] ].sort(comparator)
 okay(storted, [ [ 'a', 1 ], [ 'a', 0 ], [ 'b', 0 ], [ 'c', 2 ] ], 'sorted ascending / descending')
 ```
+
+Reversible comparators for binary search.
+
+```javascript
+const comparator = ascension([ String, Number ], true)
+
+okay(comparator([ 'a', 1 ], [ 'a', 1 ]) == 0, 'reversible equal')
+okay(comparator([ 'a', 1 ], [ 'b', 1 ]) < 0, 'reversible first part less than')
+okay(comparator([ 'b', 1 ], [ 'a', 1 ]) > 0, 'reversible first part greater than')
+okay(comparator([ 'a', 2 ], [ 'a', 1 ]) > 0, 'reversible second part less than')
+okay(comparator([ 'a', 1 ], [ 'a', 2 ]) < 0, 'reversible second part greater than')
+okay(comparator([ 'a' ], [ 'a', 1 ]) < 0, 'reversible partial equal')
+
+okay(comparator([ 'a', 1 ], [ 'a', 1 ], -1) > 0, 'reversible reversed equal')
+okay(comparator([ 'a', 1 ], [ 'b', 1 ], -1) < 0, 'reversible reversed first part less than')
+okay(comparator([ 'b', 1 ], [ 'a', 1 ], -1) > 0, 'reversible reversed first part greater than')
+okay(comparator([ 'a', 2 ], [ 'a', 1 ], -1) > 0, 'reversible reversed second part less than')
+okay(comparator([ 'a', 1 ], [ 'a', 2 ], -1) < 0, 'reversible reversed second part greater than')
+okay(comparator([ 'a' ], [ 'a', 1 ], -1) > 0, 'reversible reversed partial equal')
+```
+
+Recursive reversible comparators for binary search.
+
+```javascript
+const comparator = ascension([ [ String, Number ], Number ], true)
+
+okay(comparator([ [ 'a', 1 ], 1 ], [ [ 'a', 1 ], 1 ]) == 0, 'recursive reversible equal')
+okay(comparator([ [ 'a' ], 1 ], [ [ 'a', 1 ], 1 ]) < 0, 'recursive reversible nested partial equal')
+okay(comparator([ [ 'b' ], 1 ], [ [ 'a', 1 ], 1 ]) > 0, 'recursive reversible nested partial gerater than')
+
+okay(comparator([ [ 'a', 1 ], 1 ], [ [ 'a', 1 ], 1 ], -1) > 0, 'recursive reversible reversed equal')
+okay(comparator([ [ 'a' ], 1 ], [ [ 'a', 1 ], 1 ], -1) > 0, 'recursive reversible reversed nested partial equal')
+okay(comparator([ [ 'b' ], 1 ], [ [ 'a', 1 ], 1 ], -1) > 0, 'recursive reversible reversed nested partial gerater than')
+```
