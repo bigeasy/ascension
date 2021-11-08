@@ -42,7 +42,7 @@ const ascension = module.exports = function (...vargs) {
             if (Array.isArray(slice[0])) {
                 comparators.push(ascension(slice.shift(), reversible))
             } else {
-                comparators.push(ascension.apply(null, slice.splice(0, slice[1] == 1 || slice[1] == -1 ? 2 : 1)))
+                comparators.push(ascension.apply(null, slice.splice(0, slice[1] == 1 || slice[1] == -1 ? 2 : 1).concat(reversible)))
             }
         }
         if (reversible) {
@@ -76,7 +76,25 @@ const ascension = module.exports = function (...vargs) {
         }
     }
     const generated = comparator(vargs.shift())
-    const direction = vargs.length == 1 ? +vargs.shift() : 1
+    let direction = 1, reversible = false
+    while (vargs.length != 0) {
+        const varg = vargs.shift()
+        switch (typeof varg) {
+        case 'number': {
+                direction = varg
+            }
+            break
+        case 'boolean': {
+                reversible = varg
+            }
+            break
+        }
+    }
+    if (reversible) {
+        return function (left, right, reversal) {
+            return generated(left, right, reversal) * direction
+        }
+    }
     return function (left, right) {
         return generated(left, right) * direction
     }
